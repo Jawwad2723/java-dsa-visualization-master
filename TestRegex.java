@@ -1,0 +1,1 @@
+public class TestRegex { public static void main(String[] args) { String[] tests = {"-5", "5", "-99", "99", "100", "-100", "abc", ""}; for(String s : tests) { System.out.println(s + ": " + s.matches("-?[0-9]+")); } } }

@@ -1,0 +1,172 @@
+package src.components.components.datastructures.tree;
+
+import src.Config;
+import src.components.base.Button;
+import src.components.base.Dialog;
+import src.components.base.Panel;
+import src.components.components.AbstractScreen;
+import src.components.components.datastructures.AbstractViewDataStructureController;
+
+public class ViewTreeController extends AbstractViewDataStructureController {
+    private int tempIndexActionSelecting;
+
+    public ViewTreeController(AbstractTreeScreen rootScreen) {
+        super(rootScreen);
+    }
+
+    public AbstractTreeScreen getRootScreen() {
+        return (AbstractTreeScreen) rootScreen;
+    }
+
+    @Override
+    public void addActionListenerForButtons() {
+        // Back
+        buttons[0].addActionListener(e -> {
+            AbstractScreen mainTreeScreen =
+                    getApp().getScreens().get("MainTreeScreen");
+            rootScreen.setHidden(true);
+            mainTreeScreen.setHidden(false);
+        });
+
+        buttons[1].addActionListener(e -> {
+            tempIndexActionSelecting = -1;
+            new DialogChangeAction(
+                    (Config.WIDTH - Config.WIDTH / 3 * 2) / 2,
+                    (Config.HEIGHT - Config.HEIGHT / 10 * 9) / 2,
+                    Config.WIDTH / 3 * 2,
+                    Config.HEIGHT / 10 * 9,
+                    "Setting Actions"
+            );
+        });
+
+        buttons[2].addActionListener(e -> {
+            rootScreen.runAction();
+        });
+    }
+
+    private class DialogChangeAction extends Dialog {
+        private Button[] buttons;
+
+        public DialogChangeAction(
+                int x, int y, int width, int height,
+                String title) {
+            super(x, y, width, height, title);
+        }
+
+        @Override
+        public void addComponents() {
+            addButtons();
+            addActionListenerForButtons();
+        }
+
+        private void addButtons() {
+            // One extra row for the Save button at the bottom
+            int numberButtonPerColumn = AbstractTreeScreen.ACTIONS.size() + 1;
+            int numberButtonPerRow = 1;
+            int buttonWidth = 450;
+            int buttonHeight = 40;
+            int gapHeight = 20;
+            int totalHeight = buttonHeight * numberButtonPerColumn + (numberButtonPerColumn - 1) * gapHeight;
+            int totalWidth = buttonWidth * numberButtonPerRow;
+            int initialY = (getHeightDialog() - totalHeight) / 2;
+            int initialX = (getWidthDialog() - totalWidth) / 2;
+
+            this.buttons = new Button[AbstractTreeScreen.ACTIONS.size() + 1];
+            this.buttons[0] = new Button(
+                    initialX,
+                    initialY + (gapHeight + buttonHeight) * (numberButtonPerColumn - 1),
+                    buttonWidth, buttonHeight,
+                    "Save"
+            );
+
+            for (int i = 0; i < AbstractTreeScreen.ACTIONS.size(); i++) {
+                buttons[i+1] = new Button(
+                        initialX,
+                        initialY + (gapHeight + buttonHeight) * i,
+                        buttonWidth, buttonHeight,
+                        AbstractTreeScreen.ACTIONS.get(i)
+                );
+                buttons[i+1].setHasStatusClicked(true);
+            }
+
+            for (Button button : buttons) dialog.add(button);
+
+            boolean[] enableButtons = new boolean[AbstractTreeScreen.ACTIONS.size()];
+            if (enableButtons.length > 0) enableButtons[0] = !getRootScreen().tree.isEmpty();
+            if (enableButtons.length > 1) enableButtons[1] = !getRootScreen().tree.isEmpty();
+            if (enableButtons.length > 2) enableButtons[2] = !getRootScreen().tree.isEmpty();
+            if (enableButtons.length > 3) enableButtons[3] = !getRootScreen().tree.isEmpty();
+            if (enableButtons.length > 4) enableButtons[4] = !getRootScreen().tree.isEmpty();
+            if (enableButtons.length > 5) enableButtons[5] = !getRootScreen().tree.isEmpty();
+            if (enableButtons.length > 6) enableButtons[6] =
+                    getRootScreen().tree.size() < AbstractViewTreeAction.INDEX_COLUMNS.length;
+            if (enableButtons.length > 7) enableButtons[7] = !getRootScreen().tree.isEmpty();
+            if (enableButtons.length > 8) enableButtons[8] = !getRootScreen().tree.isEmpty();
+            if (enableButtons.length > 9) enableButtons[9] = !getRootScreen().tree.isEmpty();
+
+            for (int i = 0; i < AbstractTreeScreen.ACTIONS.size(); i++) {
+                this.buttons[i+1].setEnabledButton(enableButtons[i]);
+            }
+        }
+
+        public void referAllButtons() {
+            for (Button button : buttons) button.setIsClicked(false);
+        }
+
+        public void addActionListenerForButtons() {
+            // Save
+            this.buttons[0].addActionListener(e -> {
+                rootScreen.setIndexActionSelected(tempIndexActionSelecting);
+                dialog.dispose();
+            });
+
+            this.buttons[1].addActionListener(e -> {
+                referAllButtons(); buttons[1].setIsClicked(true); tempIndexActionSelecting = 0; });
+            this.buttons[2].addActionListener(e -> {
+                referAllButtons(); buttons[2].setIsClicked(true); tempIndexActionSelecting = 1; });
+            this.buttons[3].addActionListener(e -> {
+                referAllButtons(); buttons[3].setIsClicked(true); tempIndexActionSelecting = 2; });
+            this.buttons[4].addActionListener(e -> {
+                referAllButtons(); buttons[4].setIsClicked(true); tempIndexActionSelecting = 3; });
+            this.buttons[5].addActionListener(e -> {
+                referAllButtons(); buttons[5].setIsClicked(true); tempIndexActionSelecting = 4; });
+            this.buttons[6].addActionListener(e -> {
+                referAllButtons(); buttons[6].setIsClicked(true); tempIndexActionSelecting = 5; });
+            this.buttons[7].addActionListener(e -> {
+                referAllButtons(); buttons[7].setIsClicked(true); tempIndexActionSelecting = 6; });
+            this.buttons[8].addActionListener(e -> {
+                referAllButtons(); buttons[8].setIsClicked(true); tempIndexActionSelecting = 7; });
+            this.buttons[9].addActionListener(e -> {
+                referAllButtons(); buttons[9].setIsClicked(true); tempIndexActionSelecting = 8; });
+            this.buttons[10].addActionListener(e -> {
+                referAllButtons(); buttons[10].setIsClicked(true); tempIndexActionSelecting = 9; });
+        }
+    }
+
+    public static class DialogNotifyMaxHeight extends Dialog {
+        public DialogNotifyMaxHeight() {
+            super((Config.WIDTH - Config.WIDTH / 3 * 2) / 2,
+                    (Config.HEIGHT - Config.HEIGHT / 4) / 2,
+                    Config.WIDTH / 3 * 2,
+                    Config.HEIGHT / 4 , "Reached maximum height of tree");
+        }
+
+        @Override
+        public void addComponents() {
+            Panel panel = new Panel(
+                    0, 30, getWidthDialog(), 50,
+                    dialog.getBackground(), null,
+                    "This screen only can contains the tree with maximum height is 5. Please insert other elements.", 0
+            );
+            panel.setFont(Config.MONOSPACED_BOLD_16);
+            Button button = new Button(
+                    getWidthDialog() / 2 - 50, panel.getY() + panel.getHeightPanel() + 30,
+                    100, 50, "OK"
+            );
+            button.addActionListener(e -> dialog.dispose());
+
+            dialog.add(panel);
+            dialog.add(button);
+        }
+    }
+}
