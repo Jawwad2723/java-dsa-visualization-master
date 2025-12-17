@@ -11,7 +11,7 @@ public abstract class AbstractViewTreeAction extends AbstractViewDataStructureAc
     public static final int INITIAL_X = 2;
     public static final int INITIAL_Y = 30;
     public static final int GAP_X = 0;
-    public static final int GAP_Y = 35;
+    public static final int GAP_Y = 20;
     public static final int[] INDEX_ROWS = new int[] {
             0,
             1, 1,
@@ -88,13 +88,6 @@ public abstract class AbstractViewTreeAction extends AbstractViewDataStructureAc
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        
-        // Draw background image if available
-        if (Config.TREE_BACKGROUND != null) {
-            Image img = Config.TREE_BACKGROUND.getImage();
-            g2d.drawImage(img, 0, 0, getWidth(), getHeight(), this);
-        }
-        
         g2d.setColor(Color.BLACK);
 
         g2d.setStroke(new BasicStroke(2));

@@ -14,7 +14,7 @@ public abstract class AbstractScreen extends Panel {
     protected AbstractScreen[] screens;
 
     public AbstractScreen() {
-        super(0, 0, Config.WIDTH, Config.HEIGHT, Config.BACKGROUND_COLOR_APP, null, "", 0);
+        super(0, 0, Config.WIDTH, Config.HEIGHT, Config.BACKGROUND_COLOR_APP, Config.TREE_BACKGROUND, "", 0);
         addButtons();
         createDefaultScreens();
         addActionListenerForButtons();

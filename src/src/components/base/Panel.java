@@ -1,5 +1,6 @@
 package src.components.base;
 
+import src.Config;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
@@ -129,6 +130,12 @@ public class Panel extends JPanel {
         Graphics2D g2d = (Graphics2D) g.create();
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+        // Draw background image if present
+        if (backgroundImage != null) {
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2d.drawImage(backgroundImage.getImage(), 0, 0, width, height, null);
+        }
+
         // Draw soft shadow
         int topOpacity = 80;
         for (int i = 0; i < shadowSize; i++) {
@@ -153,14 +160,6 @@ public class Panel extends JPanel {
             GradientPaint gp = new GradientPaint(0, 0, c1, 0, height, c2);
             g2d.setPaint(gp);
             g2d.fillRoundRect(borderWidth, borderWidth, width - 2 * borderWidth, height - 2 * borderWidth, cornerRadius, cornerRadius);
-        }
-
-        // Draw background image if present
-        if (backgroundImage != null) {
-            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-            g2d.setClip(new java.awt.geom.RoundRectangle2D.Float(borderWidth, borderWidth, width - 2 * borderWidth, height - 2 * borderWidth, cornerRadius, cornerRadius));
-            g2d.drawImage(backgroundImage.getImage(), borderWidth, borderWidth, width - 2 * borderWidth, height - 2 * borderWidth, null);
-            g2d.setClip(null);
         }
 
         // Draw text
@@ -195,7 +194,12 @@ public class Panel extends JPanel {
         g2d.translate(x, y);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // Draw softened shadow
+        // Draw background image if present
+        if (backgroundImage != null) {
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2d.drawImage(backgroundImage.getImage(), 0, 0, width, height, null);
+        }
+
         int topOpacity = 80;
         for (int i = 0; i < shadowSize; i++) {
             float a = ((topOpacity / (float) shadowSize) * (shadowSize - i)) / 255f;
@@ -216,13 +220,6 @@ public class Panel extends JPanel {
             GradientPaint gp = new GradientPaint(0, 0, c1, 0, height, c2);
             g2d.setPaint(gp);
             g2d.fillRoundRect(borderWidth, borderWidth, width - 2 * borderWidth, height - 2 * borderWidth, cornerRadius, cornerRadius);
-        }
-
-        if (backgroundImage != null) {
-            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-            g2d.setClip(new java.awt.geom.RoundRectangle2D.Float(borderWidth, borderWidth, width - 2 * borderWidth, height - 2 * borderWidth, cornerRadius, cornerRadius));
-            g2d.drawImage(backgroundImage.getImage(), borderWidth, borderWidth, width - 2 * borderWidth, height - 2 * borderWidth, null);
-            g2d.setClip(null);
         }
 
         g2d.setColor(new Color(50, 50, 50));

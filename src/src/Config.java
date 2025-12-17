@@ -62,9 +62,22 @@ public class Config {
             System.out.println("Error when read img");
         }
         try {
-            TREE_BACKGROUND = new ImageIcon("DSAProjectPicture.png");
+            // Try to load from current directory first
+            java.io.File f = new java.io.File("DSAProjectPicture.png");
+            if (f.exists()) {
+                TREE_BACKGROUND = new ImageIcon(f.getAbsolutePath());
+            } else {
+                // Try from project root
+                f = new java.io.File(System.getProperty("user.dir") + "/DSAProjectPicture.png");
+                if (f.exists()) {
+                    TREE_BACKGROUND = new ImageIcon(f.getAbsolutePath());
+                } else {
+                    System.out.println("Background image not found at: " + f.getAbsolutePath());
+                }
+            }
         } catch (Exception e) {
-            System.out.println("Error loading tree background image");
+            System.out.println("Error loading tree background image: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }
