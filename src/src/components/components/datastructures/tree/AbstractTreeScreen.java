@@ -123,16 +123,17 @@ public abstract class AbstractTreeScreen extends AbstractDataStructureScreen {
 
     private class DialogGetValue extends DialogWithFieldText {
         public DialogGetValue(int x, int y, int width, int height) {
-            super(x, y, width, height, "Set value in range [0-99]");
+            super(x, y, width, height, "Set value in range [-999 to 999]");
         }
 
         @Override
         public void addListeners() {
             button.addActionListener(e -> {
                 String data = textField.getText();
-                if (data.matches("[0-9]+")) {
+                if (data.matches("-?[0-9]+")) {
                     value = Integer.parseInt(data);
-                    if (value > 99) value = 99;
+                    if (value > 999) value = 999;
+                    if (value < -999) value = -999;
                 } else {
                     value = 0;
                 }

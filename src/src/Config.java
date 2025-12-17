@@ -51,6 +51,7 @@ public class Config {
 
     // Image
     public static ImageIcon LOGO = null;
+    public static ImageIcon TREE_BACKGROUND = null;
 
     public Config() {
         instance = this;
@@ -59,6 +60,11 @@ public class Config {
                     Objects.requireNonNull(instance.getClass().getResource("assets/images/logo.png")));
         } catch (Exception e) {
             System.out.println("Error when read img");
+        }
+        try {
+            TREE_BACKGROUND = new ImageIcon("DSAProjectPicture.png");
+        } catch (Exception e) {
+            System.out.println("Error loading tree background image");
         }
     }
 }

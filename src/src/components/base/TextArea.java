@@ -99,8 +99,6 @@ public class TextArea extends JTextArea {
         g2d.dispose();
         super.paintComponent(g);
     }
-        super.paintComponent(g);
-    }
 
     public void paintBorder(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
